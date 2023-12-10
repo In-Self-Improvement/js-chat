@@ -1,5 +1,3 @@
-// 서버 구동용!
-
 const express = require("express");
 const http = require("http");
 const app = express();
@@ -13,7 +11,11 @@ app.use(express.static(path.join(__dirname, "src")));
 const PORT = process.env.PORT || 5001;
 
 io.on("connection", (socket) => {
-  console.log("연결 완료");
+  socket.on("chatMessage", (message) => {
+    console.log("Message received: ", message);
+
+    io.emit("chatMessage", message);
+  });
 });
 
 server.listen(PORT, () => {
